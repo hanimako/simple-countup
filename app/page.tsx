@@ -1,95 +1,83 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client"; // クライアントサイドでのインタラクション（状態管理、イベントハンドラ）があるため、クライアントコンポーネントとしてマークします
 
-export default function Home() {
+import { useState } from "react";
+import {
+  Button, // ボタンコンポーネント
+  Flex, // Flexboxレイアウト用コンポーネント
+  Heading, // 見出し用コンポーネント
+  HStack, // 水平方向のスタックレイアウト用コンポーネント
+  Text, // テキスト表示用コンポーネント
+  VStack, // 垂直方向のスタックレイアウト用コンポーネント
+} from "@chakra-ui/react";
+
+// HomePageコンポーネント: カウントアップアプリのメインUIとロジックを定義
+export default function HomePage() {
+  // useStateフックを使用してカウントの状態を管理します。初期値は0です。
+  const [count, setCount] = useState<number>(0);
+
+  // カウントを1増やす関数
+  const handleIncrement = () => {
+    setCount((prevCount) => prevCount + 1);
+  };
+
+  // カウントを0にリセットする関数
+  const handleReset = () => {
+    setCount(0);
+  };
+
+  // Chakra UIのコンポーネントを使用してUIを構築します
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <Flex
+      as="main" // HTML5のmain要素としてレンダリングし、セマンティックなマークアップを意識
+      direction="column" // 子要素を垂直方向に配置
+      alignItems="center" // 子要素を中央揃え（交差軸方向）
+      justifyContent="center" // 子要素を中央揃え（主軸方向）
+      minHeight="100vh" // ビューポートの高さ全体に広がるように設定
+      bg="gray.50" // 背景色（ライトモードの値を直接指定し、シンプルに）
+      p={{ base: 4, md: 8 }} // レスポンシブなパディング（スマートフォンでは4、ミディアムスクリーン以上では8）
+    >
+      <VStack spacing={{ base: 6, md: 8 }} textAlign="center">
+        {/* アプリケーションのタイトル */}
+        <Heading
+          as="h1" // h1要素としてレンダリング
+          size={{ base: "xl", md: "2xl" }} // レスポンシブなフォントサイズ
+          color="teal.500" // Chakra UIのテーマカラーを使用
+        >
+          カウントアップ
+        </Heading>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        {/* 現在のカウント数を表示 */}
+        <Text
+          fontSize={{ base: "7xl", md: "9xl" }} // 非常に大きなレスポンシブフォントサイズで視認性を高める
+          fontWeight="bold"
+          color="gray.700"
+          lineHeight="1" // 行間を詰めて数字が大きく見えるように調整
+          data-testid="count-display" // テスト用のID
+        >
+          {count}
+        </Text>
+
+        {/* 操作ボタンを水平に配置 */}
+        <HStack spacing={{ base: 3, md: 4 }}>
+          <Button
+            colorScheme="teal" // Chakra UIのカラースキーム（青緑系）
+            size={{ base: "md", md: "lg" }} // レスポンシブなボタンサイズ
+            onClick={handleIncrement}
+            aria-label="カウントを1増やす" // アクセシビリティ向上のためのaria-label
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
+            Increment
+          </Button>
+          <Button
+            colorScheme="gray" // Chakra UIのカラースキーム（グレー系）
+            variant="outline" // アウトラインスタイルのボタン
+            size={{ base: "md", md: "lg" }} // レスポンシブなボタンサイズ
+            onClick={handleReset}
+            aria-label="カウントを0にリセットする" // アクセシビリティ向上のためのaria-label
           >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+            Reset
+          </Button>
+        </HStack>
+      </VStack>
+    </Flex>
   );
 }
